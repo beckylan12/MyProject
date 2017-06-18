@@ -1,0 +1,32 @@
+
+//Check if two strings are interleave
+//"abc" and "edf", if s3 = "abedcf" then they are interleaved.
+
+bool isInterleave(string s1, string s2, string s3) {
+        // write your code here
+        if(s1.size()+s2.size()!=s3.size())return false;
+        vector<vector<bool>> v(s1.size()+1, vector<bool>(s2.size()+1));
+        for(int i = 0;i<s1.size()+1;++i){
+            for(int j = 0;j<s2.size()+1;++j){
+                v[i][j]=false;
+            }
+        }
+        v[0][0] = true;
+        for(int i =1;i<s1.size()+1;++i){
+            v[i][0] = v[i-1][0] && s1[i-1] == s3[i-1];
+        }
+        for(int i = 1;i<s2.size()+1;++i){
+            v[0][i] = v[0][i-1] && s2[i-1]==s3[i-1];
+        }
+        for(int i = 0;i <= s1.size();++i){
+            for(int j = 0;j <= s2.size();++j){
+                if(s3[i+j-1] == s1[i-1]){
+                    v[i][j] = v[i][j] || v[i-1][j];
+                }
+                if(s3[i+j-1] == s2[j-1]){
+                    v[i][j] = v[i][j] || v[i][j-1];
+                }
+            }
+        }
+        return v[s1.size()][s2.size()];
+    }
